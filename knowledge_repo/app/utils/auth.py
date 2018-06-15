@@ -65,7 +65,7 @@ def populate_identity_roles(identity, user=None):
         if current_app.config['POLICY_ANONYMOUS_DOWNLOADS']:
             identity.provides.add(roles.post_download)
 
-    else:
+    elif user.identifier in current_app.config['GITHUB_ALLOWED_USERS']:
         identity.provides.add(UserNeed(user.identifier))
         identity.provides.add(roles.index_view)
         identity.provides.add(roles.post_view)
@@ -76,5 +76,8 @@ def populate_identity_roles(identity, user=None):
 
         # TODO: Populate group permissions, and port existing group admin
         # code to roles.
+    else:
+        identity.provides.add(UserNeed(user.identifier))
+        identity.provides.add(roles.stats_view)
 
     return identity
