@@ -161,7 +161,7 @@ class OAuth2Provider(KnowledgeAuthProvider):
 
         response = self.oauth_client.get(self.get_endpoint_url(self.user_info_endpoint), verify=self.verify_ssl_certs)
         try:
-            response_dict = json.loads(response.content)
+            response_dict = response.json()
             identifier = extract_from_dict(response_dict, self.user_info_mapping['identifier'])
             if identifier is None:
                 raise ValueError("identifier '{}' not found in authentication response".format(self.user_info_mapping['identifier']))
