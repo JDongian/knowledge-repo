@@ -115,7 +115,7 @@ class OAuth2Provider(KnowledgeAuthProvider):
 
         host = self.app.config['SERVER_NAME'] or 'localhost:7000'
         scheme = self.app.config['PREFERRED_URL_SCHEME'] or 'http'
-        redirect_url = '{}://{}'.format(scheme, host)
+        redirect_url = self.app.config['REDIRECT_URL'] or '{}://{}'.format(scheme, host)
         redirect_path = '/auth/login/{}/authorize'.format(self.name)
         if self.app.config['APPLICATION_ROOT']:
             redirect_path = posixpath.join(self.app.config['APPLICATION_ROOT'], redirect_path)
