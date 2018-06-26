@@ -67,6 +67,8 @@ def populate_identity_roles(identity, user=None):
 
     # This user identifier from google shouldn't be spoofable.
     # And `@` is not a valid email character, except as delimiter b/w domain.
+    # SECURITY WARNING: THIS ASSUMES `user.identifier` IS A GOOGLE EMAIL.
+    # ONLY GOOGLE MUST BE THE AUTHENTICATION METHOD.
     elif any(user.identifier.endswith("@" + domain)
              for domain in current_app.config['USER_IDENTIFIER_DOMAINS']):
         identity.provides.add(UserNeed(user.identifier))
