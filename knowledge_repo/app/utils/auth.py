@@ -65,7 +65,10 @@ def populate_identity_roles(identity, user=None):
         if current_app.config['POLICY_ANONYMOUS_DOWNLOADS']:
             identity.provides.add(roles.post_download)
 
-    elif user.identifier in current_app.config['GITHUB_ALLOWED_USERS']:
+    # This user identifier from google shouldn't be spoofable.
+    # And `@` is not a valid email character, except as delimiter b/w domain.
+    elif any(user.identifier.endswith("@" + domain)
+             for domain in current_app.config['USER_IDENTIFIER_DOMAINS']):
         identity.provides.add(UserNeed(user.identifier))
         identity.provides.add(roles.index_view)
         identity.provides.add(roles.post_view)
